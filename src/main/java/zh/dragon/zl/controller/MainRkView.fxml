@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="379.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.MainRkViewController">
+    <Label style="-fx-font-size: 18px;" text="拖拽文件到此区域" />
+   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true" />
+    <Label fx:id="filePathLabel" style="-fx-font-size: 14px;" text="未选择文件" />
+   <HBox alignment="CENTER" prefHeight="33.0" prefWidth="348.0" spacing="5.0">
+      <children>
+          <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="331.0" />
+         <Label fx:id="schedule" text="0" />
+      </children>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+   </HBox>
+    <Button onAction="#encryptFile" text="加密" />
+    <Button onAction="#decryptFile" text="解密" />
+    <Button onAction="#chooseOutputPath" text="选择输出路径" />
+</VBox>
