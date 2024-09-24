@@ -3,22 +3,60 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="379.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.MainRkViewController">
-    <Label style="-fx-font-size: 18px;" text="拖拽文件到此区域" />
-   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true" />
-    <Label fx:id="filePathLabel" style="-fx-font-size: 14px;" text="未选择文件" />
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox alignment="CENTER" prefHeight="560.0" prefWidth="379.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.MainRkViewController">
+    <Label prefHeight="34.0" prefWidth="144.0" style="-fx-font-size: 18px;" text="拖拽文件到此区域" textFill="#e01515">
+      <VBox.margin>
+         <Insets top="-20.0" />
+      </VBox.margin></Label>
+   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="333.0" opacity="0.75" pickOnBounds="true" preserveRatio="true" />
+    <Label fx:id="filePathLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="350.0" style="-fx-font-size: 14px;" text="未选择文件" textFill="#e01515" />
    <HBox alignment="CENTER" prefHeight="33.0" prefWidth="348.0" spacing="5.0">
       <children>
-          <ProgressBar fx:id="progressBar" prefHeight="18.0" prefWidth="331.0" />
-         <Label fx:id="schedule" text="0" />
+          <ProgressBar fx:id="progressBar" prefHeight="24.0" prefWidth="324.0" />
+         <Label fx:id="schedule" prefHeight="20.0" prefWidth="29.0" text="0" textFill="#5a0886" visible="false" />
       </children>
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
    </HBox>
-    <Button onAction="#encryptFile" text="加密" />
-    <Button onAction="#decryptFile" text="解密" />
-    <Button onAction="#chooseOutputPath" text="选择输出路径" />
+   <HBox alignment="CENTER" prefHeight="41.0" prefWidth="379.0" spacing="5.0">
+      <children>
+         <Text fill="#ab1c1c" strokeType="OUTSIDE" strokeWidth="0.0" text="加密或解密速度【修改后，会占用cpu内存，请根据机器电脑性能调整】" wrappingWidth="268.0">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Text>
+         <ComboBox fx:id="comboBox" prefHeight="31.0" prefWidth="83.0" promptText="rwer" />
+      </children>
+   </HBox>
+    <Button onAction="#encryptFile" opacity="0.9" prefHeight="37.0" prefWidth="242.0" text="加密" textFill="#e01515">
+      <font>
+         <Font size="18.0" />
+      </font></Button>
+    <Button onAction="#decryptFile" opacity="0.91" prefHeight="40.0" prefWidth="235.0" text="解密" textFill="#e01515">
+      <font>
+         <Font size="18.0" />
+      </font></Button>
+   <HBox alignment="CENTER" prefHeight="34.0" prefWidth="379.0" spacing="2.0">
+      <children>
+         <Label contentDisplay="CENTER" prefHeight="29.0" prefWidth="77.0" text="输出路径：" textFill="#c2257f">
+            <HBox.margin>
+               <Insets left="60.0" />
+            </HBox.margin>
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Label fx:id="outLabel" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="237.0" text="暂无" textFill="#dd158a">
+            <font>
+               <Font size="15.0" />
+            </font></Label>
+      </children>
+   </HBox>
+    <Button onAction="#changeOutFilePath" opacity="0.91" prefHeight="33.0" prefWidth="240.0" text="点我修改默认输出路径" textFill="#e01515">
+      <font>
+         <Font size="18.0" />
+      </font></Button>
 </VBox>

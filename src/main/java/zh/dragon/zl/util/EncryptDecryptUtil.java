@@ -1,11 +1,16 @@
 package zh.dragon.zl.util;
 
+import zh.dragon.zl.controller.MainRkViewController;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.function.BiConsumer;
 
+/**
+ * @author 16784
+ */
 public class EncryptDecryptUtil {
 
 	private static final String MARKER = "ORIGINAL_EXT:";
@@ -15,7 +20,7 @@ public class EncryptDecryptUtil {
 		try (FileInputStream fis = new FileInputStream(inputFile);
 		     FileOutputStream fos = new FileOutputStream(outputFile)) {
 
-			byte[] buffer = new byte[4096];
+			byte[] buffer = new byte[MainRkViewController.dowJsDL * 1024 / 1000];
 			long totalBytes = inputFile.length();
 			long bytesRead = 0;
 
@@ -46,11 +51,10 @@ public class EncryptDecryptUtil {
 			}
 			String firstLine = lineBuilder.toString();
 			String originalExtension = firstLine.substring(MARKER.length());
-			System.out.println("第一行的内容: " + firstLine);
 			File outputFile = new File(outputDirectory, inputFile.getName().replace(".dragon", "") + "." + originalExtension);
 			try (FileOutputStream fos = new FileOutputStream(outputFile)) {
 
-				byte[] buffer = new byte[4096];
+				byte[] buffer = new byte[MainRkViewController.dowJsDL * 1024];
 				long totalBytes = inputFile.length();
 				long bytesRead = 0;
 
@@ -61,7 +65,6 @@ public class EncryptDecryptUtil {
 					bytesRead += len;
 					progressCallback.accept(bytesRead, totalBytes);
 				}
-				System.out.println(outputFile.length());
 			}
 		}
 	}

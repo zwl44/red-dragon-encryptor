@@ -1,14 +1,18 @@
 package zh.dragon.zl.controller;
 
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import zh.dragon.zl.util.EncryptDecryptUtil;
 
 import java.io.File;
@@ -19,6 +23,10 @@ import java.math.RoundingMode;
 public class MainRkViewController {
 
 
+	/**
+	 * 加密 解密速度
+	 */
+	public static Integer dowJsDL;
 	@FXML
 	private ProgressBar progressBar;
 	@FXML
@@ -27,14 +35,34 @@ public class MainRkViewController {
 	private Label filePathLabel;
 	@FXML
 	private Label schedule;
+	@FXML
+	private Label outLabel;
+	@FXML
+	private ComboBox<Integer> comboBox;
 	private File selectedFile;
 	private File outputDirectory;
-
 
 	@FXML
 	public void initialize() {
 		Image image = new Image("/zh/dragon/zl/images/upload.jpg");
 		imageView.setImage(image);
+		imageView.setOnMouseClicked(event -> {
+			// 创建 FileChooser 实例
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("选择文件");
+			// 设置文件过滤器，可以选择所有类型或特定类型
+			fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Folders", "*"),
+					new FileChooser.ExtensionFilter("All Files", "*.*"));
+			File selectedFile = fileChooser.showOpenDialog(imageView.getScene().getWindow());
+
+			// 如果选择了文件
+			if (selectedFile != null) {
+				this.selectedFile = selectedFile;
+				filePathLabel.setText(selectedFile.getAbsolutePath());
+				outLabel.setText(selectedFile.getParentFile().getPath());
+			}
+		});
+
 		// 允许拖拽文件
 		imageView.setOnDragOver(event -> {
 			if (event.getDragboard().hasFiles()) {
@@ -47,6 +75,7 @@ public class MainRkViewController {
 			if (event.getDragboard().hasFiles()) {
 				selectedFile = event.getDragboard().getFiles().get(0);
 				filePathLabel.setText(selectedFile.getAbsolutePath());
+				outLabel.setText(selectedFile.getParentFile().getPath());
 			}
 			event.setDropCompleted(true);
 			event.consume();
@@ -60,11 +89,61 @@ public class MainRkViewController {
 			BigInteger integerValue = decimal.multiply(new BigDecimal(100)).toBigInteger();
 			schedule.setText(integerValue + "%");
 		});
+		//对多选选择器进行定义
+		ObservableList<Integer> integerObservableList = FXCollections.observableArrayList(1, 2, 4, 8, 16, 32, 64, 128);
+		comboBox.setItems(integerObservableList);
+		comboBox.setValue(1);
+		dowJsDL = 1;
+		// 为ComboBox设置一个自定义的CellFactory
+		comboBox.setCellFactory(new Callback<ListView<Integer>, ListCell<Integer>>() {
+			@Override
+			public ListCell<Integer> call(ListView<Integer> param) {
+				return new ListCell<Integer>() {
+					@Override
+					protected void updateItem(Integer item, boolean empty) {
+						super.updateItem(item, empty);
+						if (item == null || empty) {
+							setText(null);
+						} else {
+							// 将整数转换为字符串，并添加后缀
+							setText(item.toString() + " Mb/S");
+						}
+					}
+				};
+			}
+		});
+		// 添加选择项变化监听器
+		comboBox.valueProperty().addListener(new ChangeListener<Integer>() {
+			@Override
+			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+				dowJsDL = newValue;
+			}
+		});
+
+	}
+
+	@FXML
+	private void changeOutFilePath() {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		File desktop = new File(System.getProperty("user.home"), "Desktop");
+		if (desktop.exists()) {
+			directoryChooser.setInitialDirectory(desktop);
+		}
+		directoryChooser.setTitle("选择一个文件夹");
+		File selectedDirectory = directoryChooser.showDialog(imageView.getScene().getWindow());
+		// 输出所选择的文件夹路径
+		if (selectedDirectory != null) {
+			outLabel.setText(selectedDirectory.getAbsolutePath());
+			outputDirectory = new File(selectedDirectory.getAbsolutePath());
+		} else {
+			System.out.println("没有选择文件夹");
+		}
 	}
 
 	@FXML
 	private void encryptFile() {
 		if (selectedFile != null) {
+			schedule.setVisible(true);
 			Task<Void> task = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
@@ -91,6 +170,7 @@ public class MainRkViewController {
 	@FXML
 	private void decryptFile() {
 		if (selectedFile != null && selectedFile.getName().endsWith(".dragon")) {
+			schedule.setVisible(true);
 			Task<Void> task = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
