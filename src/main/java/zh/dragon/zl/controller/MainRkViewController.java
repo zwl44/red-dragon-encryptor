@@ -1,8 +1,6 @@
 package zh.dragon.zl.controller;
 
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -16,17 +14,13 @@ import javafx.util.Callback;
 import zh.dragon.zl.util.EncryptDecryptUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
 public class MainRkViewController {
 
-
-	/**
-	 * 加密 解密速度
-	 */
-	public static Integer dowJsDL;
 	@FXML
 	private ProgressBar progressBar;
 	@FXML
@@ -93,7 +87,6 @@ public class MainRkViewController {
 		ObservableList<Integer> integerObservableList = FXCollections.observableArrayList(1, 2, 4, 8, 16, 32, 64, 128);
 		comboBox.setItems(integerObservableList);
 		comboBox.setValue(1);
-		dowJsDL = 1;
 		// 为ComboBox设置一个自定义的CellFactory
 		comboBox.setCellFactory(new Callback<ListView<Integer>, ListCell<Integer>>() {
 			@Override
@@ -113,12 +106,7 @@ public class MainRkViewController {
 			}
 		});
 		// 添加选择项变化监听器
-		comboBox.valueProperty().addListener(new ChangeListener<Integer>() {
-			@Override
-			public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-				dowJsDL = newValue;
-			}
-		});
+		comboBox.valueProperty().addListener((observable, oldValue, newValue) -> EncryptDecryptUtil.ensOrDecSd = new byte[1024 * newValue]);
 
 	}
 
@@ -141,6 +129,11 @@ public class MainRkViewController {
 	}
 
 	@FXML
+	private void resetFile() throws IOException {
+		EncryptDecryptUtil.fileOutputStream = true;
+	}
+
+	@FXML
 	private void encryptFile() {
 		if (selectedFile != null) {
 			schedule.setVisible(true);
@@ -155,11 +148,18 @@ public class MainRkViewController {
 					String substring = selectedFileName.substring(0, i);
 					File encryptedFile = new File(outputDirectory, substring + ".dragon");
 					EncryptDecryptUtil.encryptFile(selectedFile, encryptedFile, this::updateProgress);
+
 					return null;
 				}
 			};
 
-			task.setOnSucceeded(event -> showAlert("加密完成", "文件已成功加密！"));
+			task.setOnSucceeded(event -> {
+				if (!EncryptDecryptUtil.fileOutputStream) {
+					showAlert("加密完成", "文件已成功加密！");
+				} else {
+					EncryptDecryptUtil.fileOutputStream = false;
+				}
+			});
 			progressBar.progressProperty().bind(task.progressProperty());
 			new Thread(task).start();
 		} else {
@@ -182,7 +182,13 @@ public class MainRkViewController {
 				}
 			};
 
-			task.setOnSucceeded(event -> showAlert("解密完成", "文件已成功解密！"));
+			task.setOnSucceeded(event -> {
+				if (!EncryptDecryptUtil.fileOutputStream) {
+					showAlert("解密完成", "文件已成功解密！");
+				} else {
+					EncryptDecryptUtil.fileOutputStream = false;
+				}
+			});
 			progressBar.progressProperty().bind(task.progressProperty());
 			new Thread(task).start();
 		} else {

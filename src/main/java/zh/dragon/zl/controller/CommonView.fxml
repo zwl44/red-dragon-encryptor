@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="271.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.CommonViewController">
+    <children>
+        <Text layoutX="11.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="觉得软件好用的话，可以随意支持一下！感谢大家！！" wrappingWidth="253.00000201165676" AnchorPane.bottomAnchor="532.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="6.999997988343239" AnchorPane.topAnchor="14.0">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Text>
+        <ImageView fx:id="imageView1" fitHeight="140.0" fitWidth="118.0" layoutX="13.0" layoutY="90.0" opacity="0.9" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="393.11621856689453" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="90.0">
+            <image>
+                <Image url="@../../../../../resources/zh/dragon/zl/images/zhichi.png" />
+            </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+        </ImageView>
+        <ImageView fx:id="imageView2" fitHeight="117.0" fitWidth="124.0" layoutX="137.0" layoutY="90.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../../../resources/zh/dragon/zl/images/zhichi.png" />
+            </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+        </ImageView>
+      <Text layoutX="26.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="更多科技软件可以关注下方个人公众号获取！" wrappingWidth="223.0000034570694">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="imageView3" fitHeight="123.0" fitWidth="135.0" layoutX="72.0" layoutY="288.0" opacity="0.8" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../resources/zh/dragon/zl/images/zhichi.png" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+      </ImageView>
+      <Text layoutX="16.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="欢迎分享软件给他人！     当前软件版本为v1.0.0,可以访问下方网址，免费获取最新版本，体验更多功能！" wrappingWidth="242.9999896287918">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Hyperlink fx:id="hyperlink" layoutX="23.0" layoutY="514.0" prefHeight="66.0" prefWidth="231.0" text="https://github.com/zwl44/red-dragon-encryptor" textFill="#ab1212" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font></Hyperlink>
+      <Label layoutX="62.0" layoutY="68.0" text="WX" textFill="#d00707" underline="true" />
+      <Label layoutX="186.0" layoutY="68.0" text="ZFB" textFill="#d00707" underline="true" />
+    </children>
+</AnchorPane>
